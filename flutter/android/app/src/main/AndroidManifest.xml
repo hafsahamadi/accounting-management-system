@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"> <!-- package="com.example.flutter_application_1" ou votre package réel -->
+
+    <!-- Permissions Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Si vous prévoyez de télécharger vers le stockage externe partagé (pas seulement le cache) -->
+    <!-- Sur Android < 10, ou si vous utilisez legacy storage sur 10 -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    <!-- Sur Android 10+ si vous n'utilisez pas le Storage Access Framework pour le stockage externe -->
+    <!-- android:requestLegacyExternalStorage="true" dans la balise <application> peut être nécessaire temporairement -->
+
+
+    <application
+        android:label="Cleverbills"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"> <!-- Soyez conscient des implications de sécurité de usesCleartextTraffic -->
+        <activity
+            android:name=".MainActivity" 
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- AJOUTEZ CE BLOC PROVIDER ICI -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider" 
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <!-- FIN DE L'AJOUT DU BLOC PROVIDER -->
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <!-- QUERIES BLOCK -->
+    <queries>
+        <!-- Pour ouvrir les URL HTTP/HTTPS -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- Pour permettre à url_launcher de vérifier s'il peut gérer un type de fichier spécifique -->
+        <!-- Vous pourriez avoir besoin d'ajouter des types MIME spécifiques si vous ouvrez des types de fichiers peu courants -->
+        <!-- Exemple pour les PDF -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="application/pdf" />
+        </intent>
+        <!-- Exemple pour les images -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="image/*" />
+        </intent>
+        <!-- Laisser la déclaration générique pour les file URIs au cas où un plugin en aurait besoin, mais FileProvider est la clé -->
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="file" />
+        </intent>
+    </queries>
+
+</manifest>
